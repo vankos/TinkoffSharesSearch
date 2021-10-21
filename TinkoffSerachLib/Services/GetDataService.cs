@@ -36,9 +36,10 @@ namespace TinkoffSearchLib.Services
 
         private async Task<List<Security>> GetCandlesForAllSharesOnDateInternal(DateTime startDate, DateTime endDate, Currency currency)
         {
-            CandleInterval interval = CandleInterval.Week;
+            CandleInterval interval = CandleInterval.Month;
             if ((endDate - startDate).TotalDays <= 7) interval = CandleInterval.Hour;
             else if ((endDate - startDate).TotalDays <= 90) interval = CandleInterval.Day;
+            else if ((endDate - startDate).TotalDays <= 600) interval = CandleInterval.Week;
             try
             {
                 MarketInstrumentList markertlist = await context.MarketStocksAsync();
