@@ -47,16 +47,9 @@ namespace Tinkoff
             ShowCommand.InputGestures.Add(new KeyGesture(Key.Enter, ModifierKeys.None));
 
             DataContext = controller.UserData;
-            USDRadioButton.IsChecked = controller.UserData.Currency == Currency.Usd;
-            RubRadioButton.IsChecked = controller.UserData.Currency == Currency.Rub;
 
             StartDate.SelectedDate = DateTime.Now.AddYears(-1);
             EndDate.SelectedDate = DateTime.Now;
-        }
-
-        private void RubRadioButton_Checked(object sender, RoutedEventArgs e)
-        {
-            controller.UserData.Currency = RubRadioButton?.IsChecked == true ? Currency.Rub : Currency.Usd;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

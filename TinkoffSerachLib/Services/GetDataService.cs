@@ -26,32 +26,38 @@ namespace TinkoffSearchLib.Services
             }
         }
 
-        public Task<List<Security>> GetCandlesForAllSharesOnDate(DateTime startDate, DateTime endDate, Currency currency)
+        public Task<List<Security>> GetCandlesForAllSharesOnDate(UserData userData)
         {
-            if (startDate > endDate)
+            if (userData.StartDate > userData.EndDate)
                 throw new ArgumentException("Первая дата больше второй");
 
-            return GetCandlesForAllSharesOnDateInternal(startDate, endDate, currency);
+            return GetCandlesForAllSharesOnDateInternal(userData);
         }
 
-        private async Task<List<Security>> GetCandlesForAllSharesOnDateInternal(DateTime startDate, DateTime endDate, Currency currency)
+        private async Task<List<Security>> GetCandlesForAllSharesOnDateInternal(UserData userData)
         {
             CandleInterval interval = CandleInterval.Month;
-            if ((endDate - startDate).TotalDays <= 7) interval = CandleInterval.Hour;
-            else if ((endDate - startDate).TotalDays <= 90) interval = CandleInterval.Day;
-            else if ((endDate - startDate).TotalDays <= 600) interval = CandleInterval.Week;
+            if ((userData.EndDate - userData.StartDate).TotalDays <= 7) interval = CandleInterval.Hour;
+            else if ((userData.EndDate - userData.StartDate).TotalDays <= 90) interval = CandleInterval.Day;
+            else if ((userData.EndDate - userData.StartDate).TotalDays <= 600) interval = CandleInterval.Week;
             try
             {
-                MarketInstrumentList markertlist = await context.MarketStocksAsync();
+                List<MarketInstrument> marketInstruments = new();
+                marketInstruments.AddRange((await context.MarketStocksAsync().ConfigureAwait(false)).Instruments);
+
+                if (!userData.IsUSD)
+                    marketInstruments = marketInstruments.Where(instr => instr.Currency == Currency.Rub).ToList();
+                if (!userData.IsRUR)
+                    marketInstruments = marketInstruments.Where(instr => instr.Currency == Currency.Usd).ToList();
 
                 int failedInstrumentsCounter = 0;
                 List<Security> securities = new();
-                foreach (var instrument in markertlist.Instruments.Where((i) => i.Currency == currency))
+                foreach (var instrument in marketInstruments)
                 {
                     try
                     {
                         Thread.Sleep(250);
-                        List<CandlePayload> candles = (await context.MarketCandlesAsync(instrument.Figi, DateTime.SpecifyKind(startDate, DateTimeKind.Local), DateTime.SpecifyKind(endDate, DateTimeKind.Local), interval)).Candles;
+                        List<CandlePayload> candles = (await context.MarketCandlesAsync(instrument.Figi, DateTime.SpecifyKind(userData.StartDate, DateTimeKind.Local), DateTime.SpecifyKind(userData.EndDate, DateTimeKind.Local), interval).ConfigureAwait(false)).Candles;
                         if (candles.Count>0)
                         {
                             securities.Add(new Security()

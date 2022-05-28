@@ -16,8 +16,8 @@
             <TextBox x:Name="MoneyLimit" Width="150" Margin="8,0,8,8" Text="{Binding MoneyLimit}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="8,0,8,8">
-            <RadioButton x:Name="USDRadioButton" Content="USD"  Width="44" IsChecked="True" GroupName="Currency" Checked="RubRadioButton_Checked"/>
-            <RadioButton x:Name="RubRadioButton" Content="RUB" Width="44" Checked="RubRadioButton_Checked" GroupName="Currency"/>
+            <CheckBox x:Name="IsUSD" Content="USD" Width="60" IsChecked="{Binding IsUSD}"/>
+            <CheckBox x:Name="IsRUR" Content="RUR" Width="60" IsChecked="{Binding IsRUR}"/>
         </StackPanel>
         <StackPanel  Orientation="Horizontal" DockPanel.Dock="Top" Margin="8,0,8,8">
             <DatePicker x:Name="StartDate"   Width="95" SelectedDate="{Binding StartDate}"/>

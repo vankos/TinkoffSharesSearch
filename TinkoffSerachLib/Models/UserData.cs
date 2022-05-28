@@ -9,7 +9,6 @@ namespace TinkoffSearchLib.Models
         private decimal moneyLimitValue;
         private decimal linearity;
 
-        public Currency Currency { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Token { get; set; }
@@ -32,6 +31,9 @@ namespace TinkoffSearchLib.Models
                 OnLinearityChanged?.Invoke(this, value);
             }
         }
+
+        public bool IsUSD { get; set; }
+        public bool IsRUR { get; set; }
 
         public event EventHandler<decimal> OnMoneyLimitValueChanged;
         public event EventHandler<decimal> OnLinearityChanged;

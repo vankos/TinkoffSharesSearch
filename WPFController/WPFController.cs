@@ -41,7 +41,7 @@ namespace WPFController
             {
                 if (getDataService is null)
                     getDataService = new GetDataService(UserData.Token);
-                UnflteredData = await getDataService.GetCandlesForAllSharesOnDate(UserData.StartDate, UserData.EndDate, UserData.Currency);
+                UnflteredData = await getDataService.GetCandlesForAllSharesOnDate(UserData);
             }
             catch (Exception ex)
             {
