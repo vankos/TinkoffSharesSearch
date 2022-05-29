@@ -1,5 +1,4 @@
 ﻿using System;
-using Tinkoff.Trading.OpenApi.Models;
 
 namespace TinkoffSearchLib.Models
 {
@@ -12,6 +11,7 @@ namespace TinkoffSearchLib.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Token { get; set; }
+
         public decimal MoneyLimit
         {
             get { return moneyLimitValue; }
@@ -35,7 +35,11 @@ namespace TinkoffSearchLib.Models
         public bool IsUSD { get; set; }
         public bool IsRUR { get; set; }
 
+        public bool IsShares { get; set; }
+        public bool IsETF { get; set; }
+
         public event EventHandler<decimal> OnMoneyLimitValueChanged;
+
         public event EventHandler<decimal> OnLinearityChanged;
     }
 }

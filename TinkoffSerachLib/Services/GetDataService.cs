@@ -12,16 +12,17 @@ namespace TinkoffSearchLib.Services
     public class GetDataService
     {
         private readonly Context context;
+
         public GetDataService(string token)
         {
             try
             {
                 var connection = ConnectionFactory.GetConnection(token);
-                context =  connection.Context;
+                context = connection.Context;
             }
             catch (Exception)
             {
-                MessageService.SendMessage("Не удалось получить контекст",false);
+                MessageService.SendMessage("Не удалось получить контекст", false);
                 throw;
             }
         }
@@ -45,6 +46,11 @@ namespace TinkoffSearchLib.Services
                 List<MarketInstrument> marketInstruments = new();
                 marketInstruments.AddRange((await context.MarketStocksAsync().ConfigureAwait(false)).Instruments);
 
+                if (userData.IsShares)
+                    marketInstruments.AddRange((await context.MarketStocksAsync().ConfigureAwait(false)).Instruments);
+                if (userData.IsETF)
+                    marketInstruments.AddRange((await context.MarketEtfsAsync().ConfigureAwait(false)).Instruments);
+
                 if (!userData.IsUSD)
                     marketInstruments = marketInstruments.Where(instr => instr.Currency == Currency.Rub).ToList();
                 if (!userData.IsRUR)
@@ -58,7 +64,7 @@ namespace TinkoffSearchLib.Services
                     {
                         Thread.Sleep(250);
                         List<CandlePayload> candles = (await context.MarketCandlesAsync(instrument.Figi, DateTime.SpecifyKind(userData.StartDate, DateTimeKind.Local), DateTime.SpecifyKind(userData.EndDate, DateTimeKind.Local), interval).ConfigureAwait(false)).Candles;
-                        if (candles.Count>0)
+                        if (candles.Count > 0)
                         {
                             securities.Add(new Security()
                             {
