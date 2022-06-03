@@ -26,6 +26,8 @@
         <StackPanel  Orientation="Horizontal" DockPanel.Dock="Top" Margin="8,0,8,8">
             <DatePicker x:Name="StartDate"   Width="95" SelectedDate="{Binding StartDate}" />
             <DatePicker x:Name="EndDate" Width="95" SelectedDate="{Binding EndDate}" />
+            <Button x:Name="ForMonthButton" Content="1 Месяц" Click="ForMonthButton_Click" Width="60" Margin="8,0" />
+            <Button x:Name="ForYearButton" Content="1 Год" Click="ForYearButton_Click" Width="60" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="8,0,8,8">
             <Label Content="Линейность" />
