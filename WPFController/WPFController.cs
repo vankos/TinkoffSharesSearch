@@ -52,9 +52,11 @@ namespace WPFController
         public void FilterData()
         {
             var result = AnalyticalService.GetLinearity(AnalyticalService.GetGrowth(UnflteredData))
-              .Where(s => s.Linearity <= UserData.Linearity
-              && s.Candles.Last().Close <= UserData.MoneyLimit)
-              .ToList();
+              .Where(
+                s => s.Linearity <= UserData.Linearity
+              && s.Candles.Last().Close <= UserData.MoneyLimit
+              && (UserData.ShowNew || s.Candles[0].Time < UserData.StartDate.AddDays(7))
+              ).ToList();
             OnViewDataChanged?.Invoke(this,result);
         }
     }

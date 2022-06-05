@@ -38,6 +38,8 @@ namespace TinkoffSearchLib.Models
         public bool IsShares { get; set; }
         public bool IsETF { get; set; }
 
+        public bool ShowNew { get; set; }
+
         public event EventHandler<decimal> OnMoneyLimitValueChanged;
 
         public event EventHandler<decimal> OnLinearityChanged;

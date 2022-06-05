@@ -34,6 +34,7 @@
             <TextBox x:Name="linearity" Width="50" Margin="0,8" Text="{Binding Linearity}" />
             <Label Content="%" />
         </StackPanel>
+        <CheckBox x:Name="ShowNew" Content="Показвать новые" Width="auto" IsChecked="{Binding ShowNew}" Margin="8,0,8,8" DockPanel.Dock="Top" HorizontalAlignment="Left"/>
         <DataGrid x:Name="DataDataGrid"  DockPanel.Dock="Top" Height="400" Margin="8,0,8,8">
             <!--<DataGrid.Columns>
                 <DataGridTextColumn Header="Имя" Binding="{Binding Item.Name, Mode=OneWay}" Width="*" />
